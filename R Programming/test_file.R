@@ -54,3 +54,12 @@ l
 m2 <- matrix(1:4, nrow = 2, ncol = 2)
 dimnames(m2) <- list(c("a","b"),c("c","d"))
 m2
+
+x<-c(4,TRUE)
+class(x)
+
+x <- c(17, 14, 4, 5, 13, 12, 10)
+x[x>10]<- 4
+x
+
+x[x > 10] == 4
