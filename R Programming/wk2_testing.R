@@ -43,3 +43,41 @@ for(i in seq_len(nrows(x))) {
     print(x[i,j])
   }
 }
+
+##While Loops
+count <- 0
+while(count < 10) {
+  print(count)
+  count <- count +1
+}
+
+#can put other stuff in while loops, random walk on coin flip
+z <- 5
+while(z >= 3 && z <= 10) {
+  print(z)
+  coin <- rbinom(1,1,0.5)
+ if(coin==1){
+   z <- z+1
+ }else{
+   z <- z-1
+ }
+}
+
+##Repeat: infinite until broken. Below is an example
+repeat {
+  if(a<b){
+    break
+  } else {
+    a <- a-1
+  }
+}
+
+##Next: when you want to skip something
+for(i in 1:100){
+  if(i <= 20){
+    ##skip first 20 iterations
+    next
+  }
+  ##do something here
+}
+
