@@ -81,3 +81,27 @@ for(i in 1:100){
   ##do something here
 }
 
+
+##Functions
+#adds two values
+add2 <- function(a,b) {
+  a+b
+}
+
+#takes vector and returns values above a value. Defaults to 10
+above <- function(x,n = 10){
+  use <- x>n #gets logical vector for values > n
+  x[use] #subsets vector for values > n
+}
+
+##Finds the mean of each column of a data frame. We have it removing NA values
+columnmean <- function(y, removeNA = TRUE) {
+  nc <- ncol(y)#gets number of columns
+  means <- numeric(nc)#empty vector with length nc
+  for(i in 1:nc) {
+    means[i] <- mean(y[,i], na.rm = removeNA)#na.rm removes NA values
+  }
+  means
+}
+
+
