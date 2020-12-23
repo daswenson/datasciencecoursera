@@ -104,4 +104,4 @@ columnmean <- function(y, removeNA = TRUE) {
   means
 }
 
-
+##Scoping Rules
