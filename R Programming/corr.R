@@ -20,12 +20,14 @@ corr <- function(directory, threshold = 0){
     data <- read.csv(file = file_name)
     cln_data <- na.omit(data)
     cases <- nrow(cln_data)
-    print(i)
     
     #Appending values to vector if they exceed the threshold
     if(cases >= threshold){
       corr_vect <- append(corr_vect,cor(cln_data$nitrate,cln_data$sulfate))
     }
+  }
+  if(length(corr_vect)<1){
+    corr_vect <- numeric()
   }
   corr_vect
 }
