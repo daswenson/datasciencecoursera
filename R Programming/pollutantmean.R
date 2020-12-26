@@ -15,7 +15,6 @@ pollutantmean <- function(directory, pollutant, id = 1:332){
   for(i in id){
     pre <- if(i<10){"00"}
     else if(i<100){"0"}
-    else {next}
     file_list <- append(file_list,paste0(directory,"/",pre,toString(i),".csv"))
   }
   

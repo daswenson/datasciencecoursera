@@ -14,7 +14,6 @@ complete <- function(directory,id = 1:332){
   for(i in id){
     pre <- if(i<10){"00"}
     else if(i<100){"0"}
-    else {next}
     file_name <- paste0(directory,"/",pre,toString(i),".csv")
     row_names <- append(row_names,i)
     data <- read.csv(file = file_name)
