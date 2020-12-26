@@ -8,6 +8,11 @@
 # ignoring any missing values coded as NA
 
 
+# try this to go through all files in a directory instead.
+# specdatafiles <- as.character(list.files(directory))
+# specdatapaths <- paste(directory, specdatafiles, sep="")
+
+
 pollutantmean <- function(directory, pollutant, id = 1:332){
   #making list of file paths to call
   #Concatenates id list to list with elements of form "#.csv"

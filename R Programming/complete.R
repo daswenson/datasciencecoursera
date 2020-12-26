@@ -4,6 +4,12 @@
 #data frame where the first column is the name of the file and the second
 #column is the number of complete cases. 
 
+
+# try this to go through all files in a directory instead.
+# specdatafiles <- as.character(list.files(directory))
+# specdatapaths <- paste(directory, specdatafiles, sep="")
+
+
 complete <- function(directory,id = 1:332){
   
   #lists for id column and observation column

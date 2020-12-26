@@ -7,6 +7,12 @@
 # monitors meet the threshold requirement, then the function should return a
 # numeric vector of length 0.
 
+
+# try this to go through all files in a directory instead.
+# specdatafiles <- as.character(list.files(directory))
+# specdatapaths <- paste(directory, specdatafiles, sep="")
+
+
 corr <- function(directory, threshold = 0){
   
   #setting up vector for the correlation values
