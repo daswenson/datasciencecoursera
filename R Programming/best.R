@@ -1,4 +1,4 @@
-## Programming Assignment 3 -- Dan Swenson
+## Programming Assignment 3 -- Dan Swenson -- Part 1 and 2
 
 outcome <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
 head(outcome)
