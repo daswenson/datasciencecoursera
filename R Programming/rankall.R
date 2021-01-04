@@ -21,8 +21,8 @@ rankall <- function(outcome, num = "best") {
   }
   
   # lists for the columns of the final dataframe
-  hospital_col <- list()
-  state_list <- unique(rank_data$state[order(rank_data$state)])
+  hospital <- list()
+  state <- unique(rank_data$state[order(rank_data$state)])
   
   # setting the wanted rank to the required integer
   for(state in state_list){
@@ -54,7 +54,8 @@ rankall <- function(outcome, num = "best") {
   }
   
   col_names = c("hospital", "state")
-  output <- as.data.frame(cbind(hospital_col,state_list), col.names = col_names)
+  output <- as.data.frame(cbind(hospital_col,state_list),
+                          col.names = "hospital", "state")
   rownames(output) <- output[,2]
   return(output)
 }
