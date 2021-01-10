@@ -162,12 +162,3 @@ write.table(big_df, file=file, row.names=FALSE,
 # compare the two
 system.time(fread(file))
 system.time(read.table(file, header = TRUE, sep = "\t"))
-
-
-  ## SWIRL
-    # dplyr
-      # useful for manipulating data
-      # select, filter -  can get required col/row faster
-      # arrange - sort rows by value in col
-      # mutate -  lets you create new variable based on existing
-      # summarize - collapses data set to single row
