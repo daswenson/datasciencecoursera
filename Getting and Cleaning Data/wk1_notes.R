@@ -1,5 +1,7 @@
 ## Week1 Testing
 
+
+#----------
   ## file.exists()
     # tells whether a file with the specified name exists in the 
     # specified directory
@@ -10,6 +12,8 @@ if(!file.exists("data")){
   dir.create("data")
 }
 
+
+#----------
   ## download.file()
     # parameters: url,destfile, method
     # helps with reproducability
@@ -24,6 +28,8 @@ query?where=1%3D1&outFields=*&outSR=4326&f=json"
 download.file(fileUrl, destfile = "./data/cameras.csv")
 dateDownLoaded <- date() # always specify when you get the data
 
+
+#----------
   ## reading local files
     # just like we learned before
     # read.table()
@@ -36,6 +42,7 @@ data <- read.csv("./data/cameras.csv", sep = ",", header = TRUE)
 head(data)
 
 
+#-----------
   ## Reading Excel Files
     # find package or use format below
 ### DOES NOT WORK CAUSE DOWNLOAD LINK
@@ -43,6 +50,8 @@ download.file(fileUrl, destfile = "./data/cameras.xlsx")
 cameraData <- read.table("./data/cameras.xlsx", sep = "\t", header=TRUE)
 head(cameraData)
 
+
+#------------
   ## Reading XML
     # frequently used ot store structured data
     # used a lot in web scraping
@@ -79,6 +88,8 @@ scores <- xpathSApply(doc,"//div[@class='score']", xmlValue)
 # gets the name of the teams in the left column (includes next scheduled game)
 teams <- xpathSApply(doc, "//div[@class='game-info']", xmlValue)
 
+
+#----------
   ## Reading JSON 
     # Javascript Object notation
     # data as numbers, strings, boolean, array, object

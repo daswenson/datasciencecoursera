@@ -1,5 +1,6 @@
 ## Week 2 testing
 
+#-----------
 ## Reading from MySQL
   # data is structure in data bases
   # tables within
@@ -72,16 +73,16 @@ h5write(B, "example.h5", "foo/foobaa/B")
 h5ls("example.h5")
 
   # can write data set directly
-df = data.frame(1L:5L,seq(0,1, length.out = 5),
+df <- data.frame(1L:5L,seq(0,1, length.out = 5),
                 c("ab","cde","fghi","a","s"),
                 stringsAsFactors = FALSE)
 h5write(df, "example.h5","df")
 h5ls("example.h5")
 
   # reading data
-readA = h5read("example.h5","foo/A")
-readB = h5read("example.h5", "foo/foobaa/B")
-readdf = h5read("example.h5", "df")
+readA <- h5read("example.h5","foo/A")
+readB <- h5read("example.h5", "foo/foobaa/B")
+readdf <- h5read("example.h5", "df")
 readA
 
   # reading and writing in chunks
@@ -90,8 +91,113 @@ h5write(c(12,13,14),"example.h5","foo/A", index = list(1:3,1))
 h5read("example.h5","foo/A") # can pass index argument to this also
 
 
-  ## Readign from the web
+#-----------
+  ## Reading from the web
+    # focus on web site scraping
+      # programatically extracting data from websites
 
+  # example using his google scholar page
+con <- url("https://scholar.google.com/citations?user=HI-I6C0AAAAJ&hl=en")
+htmlCode <- readLines(con)
+close(con) # be sure to close connection afterwards
+htmlCode # MAKES RSTUDIO FREEZE?? 
+
+  # parsing with XML
+library(XML)
+library(RCurl)
+url <- "https://scholar.google.com/citations?user=HI-I6C0AAAAJ&hl=en"
+fileurl <- getURL(url) # use this for https links to work
+html <- htmlTreeParse(fileurl, useInternalNodes = T)
+
+xpathSApply(html,"//title", xmlValue)
+xpathSApply(html, "//td[@class='gsc_a_c']", xmlValue)
+
+  # another approach to getting data
+library(httr); html2 <- GET(url)
+content2 <- content(html2, as="text") # extracts content
+parsedHtml <- htmlParse(content2, asText = TRUE) # looks like XML package
+xpathSApply(parsedHtml,"//title", xmlValue)
+
+  # accessing websites with passwords
+pg1 <- GET("http://httpbin.org/basic-auth/user/passwd")
+pg1 # returns status 401 cause we need password
+
+pg2 <- GET("http://httpbin.org/basic-auth/user/passwd",
+           authenticate("user","passwd"))
+pg2 # status:200 means we have accesss
+names(pg2)
+
+  # using handles prevents from having to authenticate many times
+google <- handle("https://google.com")
+pg1 <- GET(handle=google,path="/")
+pg2 <- GET(handle = google, path="search")
+  # r-bloggers has good examples of web scraping
+
+
+#----------
+  ## Reading from APIs
+    # most tech companies (twitter/facebook) have APIs
+    # able to get data using GET requests
+    # most cases you have to create an API account
+          # using twitter as example, NEED DEV ACCOUNT
+      
+library(httr)
+
+myapp <- oauth_app("twitter",
+                   key="yourConsumerKey", secret = "yourconsumer secret")
+sig <- sign_oauth1.0(myapp, token = "yourToken",
+                    token_secret = "yourTokenSecret")
+
+    # specific url that corresponds to what you want
+        # ver: 1.1, Components: statuses of home timeline in json, auth:sig
+homeTL <- GET("https://api.twitter.com/1.1/statuses/home_timeline.json", sig)
+
+json1 <- content(homeTL) # extracts data
+
+# reformats as dataframe, each row=tweet
+json2 <- jsonlite::fromJSON(toJSON(json1))
+json2[1,1:4]
+
+  # go into twitter API documentation to get what url you need
+
+#----------
+  ## Reading from other sources
+    # brief review of useful packages
+    # can also google or R package
+
+    # interacting files directly
+      # file - open a connection to a text file
+      # url - open connection to url
+      # gzfile - connection to gzfile
+      # ?connection for more information
+      # REMEMBER TO CLOSE CONNECTIONS
+
+    # foreign package
+      # loads data from Minitab, S, SAS, SPSS, Stata, Systat
+      # basic functions read.extension - look in documentation
+    
+    # large number of database packages
+      # RPostresSQL - DBI-compliant connection
+      # RODBC - interfaces to multiple databases
+      #Rmongo - interfaces to MongoDb
+
+    # Reading Images
+      # jpeg
+      # readbitmap
+      # png
+      # EBIMage - bioconductor
+
+    # GIS Data
+      # rdgal
+      # rgeos
+      # raster
+    
+    # Music data (MP3)
+      # tuneR
+      # seewave
+
+
+#----------
 ## SWIRL
   # dplyr
     # useful for manipulating data
