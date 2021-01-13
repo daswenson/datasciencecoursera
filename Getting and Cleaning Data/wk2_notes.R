@@ -195,13 +195,3 @@ json2[1,1:4]
     # Music data (MP3)
       # tuneR
       # seewave
-
-
-#----------
-## SWIRL
-  # dplyr
-    # useful for manipulating data
-    # select, filter -  can get required col/row faster
-    # arrange - sort rows by value in col
-    # mutate -  lets you create new variable based on existing
-    # summarize - collapses data set to single row
