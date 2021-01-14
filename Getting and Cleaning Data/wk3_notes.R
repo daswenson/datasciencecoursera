@@ -203,11 +203,111 @@ dim(spraysums) # returns same dimensions as original data set
 
 ### plyr tutorial - http://plyr.had.co.nz/09-user/
 
+
 #----------
-## SWIRL
-# dplyr
-# useful for manipulating data
-# select, filter -  can get required col/row faster
-# arrange - sort rows by value in col
-# mutate -  lets you create new variable based on existing
-# summarize - collapses data set to single row
+  ## Managing DF with dplyr
+    # package is about working with df as they are key structures
+    # optimized and distilled version of plyr package
+    # is very fast, most key operations are in C++
+
+    # select - returns a subset of the columns of a data frame
+    # Filter - extracts a subset of rows
+    # arrange - allows to reorder rows while preserving col order
+    # rename - rename the variable
+    # mutate - transforms or adds new variables
+    # summarize - generate summary statistics of the data frame.
+
+    # first argument is always DF, next describes what do
+        # can refer to col without $ operator
+    # DF must be properly formatted and annotated to be useful
+
+library(dplyr)
+
+chicago <- readRDS("./data/chicago.rds")
+dim(chicago)  
+str(chicago)  # looking at variable names
+
+      # select
+head(select(chicago,city:dptp)) # looking at cols city through dptp
+head(select(chicago,-(city:dptp))) # all cols except those stated
+
+      # filter
+chic.f <- filter(chicago,pm25tmean2 > 30) # subset with 1 argument
+head(chic.f,10)
+
+chic.f <- filter(chicago,pm25tmean2 > 30 & tmp > 80) # subset w/ 2 args
+head(chic.f,10)
+
+      # arrange
+chicago <- arrange(chicago,date) # arranges rows by date
+head(chicago)
+tail(chicago)
+
+chicago <- arrange(chicago, desc(date)) # descending order
+head(chicago)
+
+      # rename - hard to do without a function like this
+chicago <- rename(chicago, pm25 = pm25tmean2, dewpoint = dptp) # new then old
+head(chicago)
+
+      # mutate
+chicago <- mutate(chicago, pm25detrend = pm25-mean(pm25,na.rm = TRUE))
+head(select(chicago,pm25,pm25detrend))
+
+      # groupby
+# creates a new var that determines whether it is hot or cold
+chicago <- mutate(chicago, tempcat = factor(1*(tmpd > 80), 
+                                            labels= c("cold","hot")))
+hotcold <- group_by(chicago, tempcat)
+hotcold
+
+# summarises hotcold with each of the given arguments
+summarise(hotcold, pm25 = mean(pm25, na.rm=TRUE),
+          o3 = max(o3tmean2),no2 = median(no2tmean2))
+
+# grouping by years
+chicago <- mutate(chicago, year = as.POSIXlt(date)$year +1900)
+years <- group_by(chicago,year)
+summarise(years,pm25 = mean(pm25, na.rm=TRUE),
+          o3 = max(o3tmean2),no2 = median(no2tmean2))
+
+# %>% allows us to pipeline functions together
+chicago %>% mutate(month = as.POSIXlt(date)$mon +1) %>% group_by(month) %>% summarize(pm25 = mean(pm25, na.rm=TRUE), o3 = max(o3tmean2),no2 = median(no2tmean2))
+
+
+#----------
+  ## Merging Data
+    # using the merge() fnc
+    # parameters x,y,by,by.x,by.y,all
+
+if(!file.exists("./data")){dir.create("./data")}
+fileUrl1 = "https://s3.amazonaws.com/csvpastebin/uploads/e70e9c289adc4b87c900fdf69093f996/reviews.csv"
+fileUrl2 = "https://s3.amazonaws.com/csvpastebin/uploads/0863fd2414355555be0260f46dbe937b/solutions.csv"
+download.file(fileUrl1,destfile="./data/reviews.csv",method="curl")
+download.file(fileUrl2,destfile="./data/solutions.csv",method="curl")
+reviews = read.csv("./data/reviews.csv"); solutions <- read.csv("./data/solutions.csv")
+head(reviews,2)
+head(solutions,2)
+
+names(reviews)
+names(solutions)
+
+  # default is to merge all common col names
+mergedData <- merge(reviews, solutions, by.x="solution_id",by.y="id",all=TRUE)
+head(mergedData)
+
+intersect(names(solutions),names(reviews))
+mergedData2 <- merge(reviews,solutions,all=TRUE)
+head(mergedData2)
+
+  # can also use join in plyr package
+    # faster then merge but with less features, only merge by common names
+library(plyr)
+df1 <- data.frame(id=sample(1:10), x=rnorm(10))
+df2 <- data.frame(id=sample(1:10), y=rnorm(10))
+arrange(join(df1,df2),id)
+
+  # using join_all to merge everything
+df3 <- data.frame(id=sample(1:10), z=rnorm(10))
+dfList <- list(df1,df2,df3)
+join_all(dfList)
