@@ -45,7 +45,7 @@ Y <- cbind(X,rnorm(5)) # for columns. rows = rbind
 "https://data.baltimorecity.gov/datasets/restaurants/geoservice?geometry=
   -77.253%2C39.193%2C-75.988%2C39.379"
 
-  # GIVES JSON NOT CSV LIKE VIDEO SAYS
+  # GIVES JSON NOT CSV LIKE VIDEO SAYS, download using website
   # fileUrl <- "https://opendata.baltimorecity.gov/egis/rest/services/Hosted/
   # Restaurants/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json"
   # download.file(fileUrl, destfile = "./data/restaurants.csv")
